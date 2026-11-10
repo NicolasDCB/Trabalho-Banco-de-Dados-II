@@ -31,9 +31,11 @@
         }
         .logo {
             display: block;
-            margin: 0 auto 0.5rem;
-            width: 80px;
-            height: 80px;
+            margin: 0 auto 0.8rem;
+            width: 220px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         h1 {
             margin: 0.3rem 0;
@@ -209,7 +211,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ url_for('static', filename='ia.svg') }}" alt="IA Logo" class="logo"/>
+            <img src="{{ url_for('static', filename='ia.png') }}" alt="Gênio do Prompt Logo" class="logo"/>
             <h1>Gênio do Prompt</h1>
             <p class="subtitle">Base e Análise de Evolução dos Prompts • Banco de Dados II (Nathan e Nicolas)</p>
         </div>
