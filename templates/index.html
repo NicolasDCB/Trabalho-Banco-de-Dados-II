@@ -1,45 +1,309 @@
-{% raw %}
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Prompt Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gênio do Prompt - Evolução de Prompts</title>
     <style>
-        body {font-family: Arial, sans-serif; margin: 2rem; background:#f5f5f5;}
-        .container {max-width: 800px; margin:auto; background:white; padding:2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-        h1 {text-align:center; margin-bottom:1rem;}
-        .logo {display:block; margin:0 auto 1rem; width:120px;}
-        form {margin-bottom:2rem;}
-        textarea {width:100%; font-family:inherit; font-size:1rem; padding:0.5rem; border:1px solid #ccc; border-radius:4px;}
-        input[type="file"] {margin-top:0.5rem;}
-        button {background:#0066cc; color:white; border:none; padding:0.6rem 1.2rem; border-radius:4px; cursor:pointer; font-size:1rem;}
-        button:hover {background:#004999;}
-        .prompt-card {border:1px solid #e0e0e0; border-radius:6px; padding:1rem; margin-bottom:1rem; background:#fafafa;}
-        .prompt-card img {max-width:180px; display:block; margin-top:0.5rem; border-radius:4px;}
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 2rem 1rem;
+            background: #f0f2f5;
+            color: #222;
+        }
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 0.5rem;
+            width: 80px;
+            height: 80px;
+        }
+        h1 {
+            margin: 0.3rem 0;
+            font-size: 1.7rem;
+            color: #1e3a8a;
+        }
+        .subtitle {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        h2 {
+            font-size: 1.2rem;
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .new-prompt-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .form-group {
+            flex: 1;
+            margin-bottom: 0.8rem;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            color: #334155;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 0.55rem 0.7rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            background: #fff;
+        }
+        input[type="file"] {
+            font-size: 0.9rem;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #004c99;
+        }
+        .btn-green {
+            background: #16a34a;
+        }
+        .btn-green:hover {
+            background: #15803d;
+        }
+        .btn-danger {
+            background: #dc2626;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .activity-card {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            background: #ffffff;
+        }
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .activity-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 0;
+        }
+        .activity-meta {
+            font-size: 0.82rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+        }
+        .version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .version-item {
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #0066cc;
+            border-radius: 4px;
+            padding: 0.85rem;
+            background: #f8fafc;
+        }
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            color: #475569;
+        }
+        .version-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: bold;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+        .version-text {
+            margin: 0.4rem 0 0;
+            padding: 0.65rem;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+        .version-item img {
+            max-width: 180px;
+            display: block;
+            margin-top: 0.6rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        details.evolve-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 0.85rem 1rem;
+        }
+        details.evolve-box summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #166534;
+            font-size: 0.95rem;
+        }
+        .evolve-form {
+            margin-top: 0.85rem;
+        }
+        .empty-msg {
+            text-align: center;
+            color: #64748b;
+            padding: 1.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='ai.svg') }}" alt="AI logo" class="logo"/>
-        <h1>Prompt Generator</h1>
-        <form method="post" enctype="multipart/form-data">
-            <label for="prompt">Prompt text</label><br>
-            <textarea name="prompt" id="prompt" rows="4" required></textarea><br><br>
-            <label for="image">Upload image (optional)</label><br>
-            <input type="file" name="image" id="image" accept="image/*"><br><br>
-            <button type="submit">Save</button>
-        </form>
-        <hr>
-        <h2>Saved prompts</h2>
-        {% for row in prompts %}
-        <div class="prompt-card">
-            <p><strong>Prompt:</strong> {{ row['text']|e }}</p>
-            {% if row['image_path'] %}
-            <img src="{{ url_for('static', filename=row['image_path']) }}" alt="uploaded image">
-            {% endif %}
+        <div class="header">
+            <img src="{{ url_for('static', filename='ia.svg') }}" alt="IA Logo" class="logo"/>
+            <h1>Gênio do Prompt</h1>
+            <p class="subtitle">Base e Análise de Evolução dos Prompts • Banco de Dados II (Nathan e Nicolas)</p>
         </div>
-        {% endfor %}
+
+        <!-- 1. Cadastrar Novo Prompt -->
+        <div class="new-prompt-box">
+            <h2>1. Cadastrar Novo Prompt (Versão v1)</h2>
+            <form method="post" action="{{ url_for('index') }}" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="title">Título da Atividade / Prompt:</label>
+                        <input type="text" name="title" id="title" placeholder="Ex: Gerador de Queries SQL" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="author">Autor:</label>
+                        <input type="text" name="author" id="author" value="Nathan e Nicolas" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prompt">Texto do Prompt Inicial (v1):</label>
+                    <textarea name="prompt" id="prompt" rows="3" placeholder="Digite o prompt inicial..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Anexar imagem (opcional):</label>
+                    <input type="file" name="image" id="image" accept="image/*">
+                </div>
+
+                <button type="submit">Salvar Prompt no Banco</button>
+            </form>
+        </div>
+
+        <!-- 2. Lista de Prompts do Banco + Evolucao -->
+        <h2>2. Prompts Salvos no Banco e Histórico de Versões ({{ activities|length }})</h2>
+
+        {% if activities %}
+            {% for act in activities %}
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div>
+                        <p class="activity-title">{{ act.title }}</p>
+                        <div class="activity-meta">
+                            Autor: <strong>{{ act.author }}</strong> • Total de versões: <strong>{{ act.versions|length }}</strong>
+                        </div>
+                    </div>
+                    <form method="post" action="{{ url_for('delete_activity', activity_id=act.id) }}" style="margin:0;">
+                        <button type="submit" class="btn-danger" title="Excluir atividade">Excluir</button>
+                    </form>
+                </div>
+
+                <!-- Lista de Versoes (v1, v2, v3...) -->
+                <div class="version-list">
+                    {% for v in act.versions %}
+                    <div class="version-item">
+                        <div class="version-header">
+                            <span>
+                                <span class="version-badge">Versão v{{ v['version_number'] }}</span>
+                                &nbsp; {{ v['change_notes'] }}
+                            </span>
+                            <span>{{ v['created_at'] }}</span>
+                        </div>
+                        <div class="version-text">{{ v['text'] }}</div>
+                        {% if v['image_path'] %}
+                        <img src="{{ url_for('static', filename=v['image_path']) }}" alt="Imagem anexada">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Evoluir este Prompt (Adicionar v2, v3...) -->
+                <details class="evolve-box">
+                    <summary>+ Evoluir este Prompt (Adicionar Versão v{{ act.next_version }})</summary>
+                    <form method="post" action="{{ url_for('evolve_prompt', activity_id=act.id) }}" enctype="multipart/form-data" class="evolve-form">
+                        <div class="form-group">
+                            <label>Texto do Prompt Evoluído (v{{ act.next_version }}):</label>
+                            <textarea name="prompt" rows="3" required>{{ act.latest_text }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>O que mudou / melhorou nesta versão?</label>
+                            <input type="text" name="change_notes" placeholder="Ex: Adicionei mais detalhes e regras de resposta" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagem (opcional):</label>
+                            <input type="file" name="image" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn-green">Salvar Nova Versão (v{{ act.next_version }})</button>
+                    </form>
+                </details>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-msg">Nenhum prompt cadastrado ainda. Cadastre o primeiro acima!</div>
+        {% endif %}
     </div>
 </body>
 </html>
-{% endraw %}
